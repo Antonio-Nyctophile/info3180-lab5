@@ -10,8 +10,8 @@ from flask import render_template, request, jsonify, send_file, send_from_direct
 import os
 from. import db
 from werkzeug.utils import secure_filename
-#from app.models import Movie
-#from app.forms import MovieForm
+from app.models import Movie
+from app.forms import MovieForm
 
 
 ###
@@ -26,6 +26,20 @@ def index():
 ###
 # The functions below should be applicable to all Flask apps.
 ###
+"""@app.route('/api/v1/movies', methods=['POST'])
+def movies(form):
+    response = ''
+    form =MovieForm()
+
+    if form.validate_on_submit():
+
+        title=
+        description=
+        """
+
+
+
+
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
