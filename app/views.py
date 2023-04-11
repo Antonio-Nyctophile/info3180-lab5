@@ -91,6 +91,9 @@ def get_movies():
 def get_poster(filename):
     return send_from_directory(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']), filename)
 
+@app.route('/api/v1/csrf-token', methods=['GET']) 
+def get_csrf():     
+    return jsonify({'csrf_token': generate_csrf()}) 
 
 # Here we define a function to collect form errors from Flask-WTF
 # which we can later use
