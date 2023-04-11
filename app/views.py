@@ -8,7 +8,7 @@ This file creates your application.
 from app import app
 from flask import render_template, request, jsonify, send_file, send_from_directory
 import os
-from. import db
+from . import db
 from werkzeug.utils import secure_filename
 from app.models import Movie
 from app.forms import MovieForm
@@ -26,19 +26,70 @@ def index():
 ###
 # The functions below should be applicable to all Flask apps.
 ###
-"""@app.route('/api/v1/movies', methods=['POST'])
+@app.route('/api/v1/movies', methods=['POST'])
 def movies(form):
     response = ''
     form =MovieForm()
 
     if form.validate_on_submit():
 
-        title=
-        description=
-        """
+        title = form.title.data
+        description = form.description.data
+        poster = form.poster.data
+        
+        poster_filename = secure_filename(poster.filename)
+        
+        response = jsonify({"message": "Movie Successfully added", 
+                    "title": title,
+                    "poster": poster_filename, 
+                    "description": description})
+            
+        new_movie = Movie(title, description, poster_filename)
+        poster.save(os.path.join(app.config['UPLOAD_FOLDER'], poster_filename))
+    
+        # adding to database
+        db.session.add(new_movie)
+        db.session.commit()
+        
+        return response
+        
+    else:
+        errors = form_errors(form)
+        
+        if (errors):
+            
+            error_list = {"errors": []}
+            
+            error_list['errors'] = errors
+            
+            response = jsonify(error_list)
+            
+        return response
+
+@app.route('/api/v1/movies', methods = ['GET'])
+def get_movies():
+    movies = Movie.query.all()
+    
+    response = {'movies': []}
+    
+    
+    for movie in movies:
+        
+        movie_info = dict()
+        
+        movie_info['id'] = movie.id
+        movie_info['title'] = movie.title
+        movie_info['poster'] = f'/api/v1/posters/{movie.poster}'
+        movie_info['description'] = movie.description
+        
+        response['movies'] += [movie_info]
+        
+    return jsonify(response)
 
 
-
+@app.route('/api/v1/posters/<filename>')
+def get_poster(filename):
+    return send_from_directory(os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER']), filename)
 
 
 # Here we define a function to collect form errors from Flask-WTF
