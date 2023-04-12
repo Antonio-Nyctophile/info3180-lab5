@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="page-header">
+    <div class="page-header1">
        <h1>Add A New Movie</h1>
   </div>
    
@@ -98,7 +98,7 @@ function saveMovie() {
 
 <style>
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700");
-.page-header {
+.page-header1 {
   text-align: center;
   padding-right: 56%;
   margin-bottom: 20px;
